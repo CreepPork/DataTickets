@@ -1,0 +1,40 @@
+body{
+	background: #E9E9E9;
+}
+
+header{
+	background-color: #222;
+	box-shadow: 3px 3px 5px #000;
+}
+
+.index_title{
+	text-align: center;
+	color: #FFF;
+	text-shadow: 0px 0px 3px;
+}
+
+.index_options{
+	text-align: center;
+	padding: 30px;
+	padding-right: 30px;
+}
+
+.index_options a{
+	cursor: pointer;
+}
+
+.logoImg{
+	margin: 10% 0 0 5%;
+}
+
+.tickets, .usuarios{
+	margin-top: 5%;
+}
+
+.btn{
+	width: 100%;
+}
+
+.invisible{
+	display: none;
+}
