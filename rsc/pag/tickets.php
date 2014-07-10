@@ -58,6 +58,7 @@
 
 		</div>
 		<div class="col-lg-6">
+		<div class="col-lg-12">
 			<h1>Comentários do Ticket</h1>
 			<form method="post" action="rsc/system_arqs/actions.php">
 				<div class="form-group">
@@ -76,7 +77,7 @@
 				</div>
 			</form>
 			<hr>
-			<div class="coment_delimiter" style="height: 500px; overflow: auto;">
+			<div class="coment_delimiter" style="height: 300px; overflow: auto;">
 			<?php 
 			 $stmt = "SELECT tck_comentario.comentario, tck_comentario.data, tck_comentario.id_user, tck_comentario.id_client FROM tck_comentario
 			 WHERE id_ticket =".$_GET['interna']." ORDER BY tck_comentario.id DESC";
@@ -101,6 +102,39 @@
 			
 			</div>
 		</div>
+			<div class="col-lg-12">
+			<h1> Arquivos do Ticket</h1>
+			<div class="panel panel-default">
+			    <div class="panel-heading">
+			      <h4 class="panel-title">
+			        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+			         Upload de arquivo
+			        </a>
+			      </h4>
+			    </div>
+			    <div id="collapseOne" class="panel-collapse collapse in">
+			      <div class="panel-body">
+			        <form method="post" action="rsc/system_arqs/actions.php">
+					<input type="hidden" name="upload_arquivo" value="1">
+					<div class="form-group">
+                       <label for="arq">Arquivo:</label>
+                       <input type="file" name="arq" id="arq">
+                       <input type="submit" value="Enviar Arquivo" class="btn btn-success" style="width: 130px; margin-top: 30px;">
+					</div>
+					
+				</form>
+			      </div>
+			    </div>
+			  </div>
+				
+				
+
+			</div>
+		</div>
+
+
+
+
 		</div>
 
 			<?php
