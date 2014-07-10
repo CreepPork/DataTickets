@@ -391,6 +391,77 @@
 		}
 	}
 
+	// UPLOAD DE arq ###############################################################################################
+
+	if (isset($_POST['upload_arquivo'])) {
+	
+					// Pasta onde o arq vai ser salvo
+				$_UP['pasta'] = 'uploads/';
+
+				// Tamanho máximo do arq (em Bytes)
+				$_UP['tamanho'] = 1024 * 1024 * 2; // 2Mb
+
+				// Array com as extensões permitidas
+				$_UP['extensoes'] = array('jpg', 'png', 'gif', 'pdf');
+
+				// Renomeia o arq? (Se true, o arq será salvo como .jpg e um nome único)
+				$_UP['renomeia'] = false;
+
+				// Array com os tipos de erros de upload do PHP
+				$_UP['erros'][0] = 'Não houve erro';
+				$_UP['erros'][1] = 'O arq no upload é maior do que o limite do PHP';
+				$_UP['erros'][2] = 'O arq ultrapassa o limite de tamanho especifiado no HTML';
+				$_UP['erros'][3] = 'O upload do arq foi feito parcialmente';
+				$_UP['erros'][4] = 'Não foi feito o upload do arq';
+
+				// Verifica se houve algum erro com o upload. Se sim, exibe a mensagem do erro
+				if ($_FILES['arq']['error'] != 0) {
+				die("Não foi possível fazer o upload, erro:<br />" . $_UP['erros'][$_FILES['arq']['error']]);
+				exit; // Para a execução do script
+				}
+
+				// Caso script chegue a esse ponto, não houve erro com o upload e o PHP pode continuar
+
+				// Faz a verificação da extensão do arq
+				$extensao = strtolower(end(explode('.', $_FILES['arq']['name'])));
+				if (array_search($extensao, $_UP['extensoes']) === false) {
+				echo "Por favor, envie arqs com as seguintes extensões: jpg, png , gif ou pdf";
+				}
+
+				// Faz a verificação do tamanho do arq
+				else if ($_UP['tamanho'] < $_FILES['arq']['size']) {
+				echo "O arq enviado é muito grande, envie arqs de até 2Mb.";
+				}
+
+				// O arq passou em todas as verificações, hora de tentar movê-lo para a pasta
+				else {
+				// Primeiro verifica se deve trocar o nome do arq
+				if ($_UP['renomeia'] == true) {
+				// Cria um nome baseado no UNIX TIMESTAMP atual e com extensão .jpg
+				$nome_final = time().'.jpg';
+				} else {
+				// Mantém o nome original do arq
+				$nome_final = $_FILES['arq']['name'];
+				}
+
+				echo $nome_final;."nome final<br>"
+
+				// Depois verifica se é possível mover o arq para a pasta escolhida
+				if (move_uploaded_file($_FILES['arq']['tmp_name'], $_UP['pasta'] . $nome_final)) {
+				// Upload efetuado com sucesso, exibe uma mensagem e um link para o arq
+				$stmt = "INSERT INTO tck_arqs (arq_name, arq_link, ticket) VALUES ('".$nome_final."', '".$_UP['pasta'] . $nome_final ."', ".$_POST['id_ticket'].")";
+				$stmt = mysql_query($stmt);
+				echo "sucesso";
+				} else {
+				// Não foi possível fazer o upload, provavelmente a pasta está incorreta
+				echo "Não foi possível enviar o arq, tente novamente";
+				}
+
+				}
+
+	}
+
+
 
 
 

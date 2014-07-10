@@ -114,10 +114,11 @@
 			    </div>
 			    <div id="collapseOne" class="panel-collapse collapse in">
 			      <div class="panel-body">
-			        <form method="post" action="rsc/system_arqs/actions.php">
+			        <form method="post" action="rsc/system_arqs/actions.php" enctype= "multipart/form-data">
+			        <input type="hidden" name="id_ticket" value="<?php echo $_GET['interna'] ?>">
 					<input type="hidden" name="upload_arquivo" value="1">
 					<div class="form-group">
-                       <label for="arq">Arquivo:</label>
+                       <label for="arq">Arquivo <small>Máximo de 2MB</small>:</label>
                        <input type="file" name="arq" id="arq">
                        <input type="submit" value="Enviar Arquivo" class="btn btn-success" style="width: 130px; margin-top: 30px;">
 					</div>
