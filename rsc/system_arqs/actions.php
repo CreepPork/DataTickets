@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <?php
 	include('connection.php'); 
 	include('contants.php');
@@ -30,7 +31,7 @@
 
 	session_start();
 
-	echo "lablbalbalb";
+	
 
 	//LOGANDO ###################################################################################################################
 
@@ -419,7 +420,7 @@
 
 				// Verifica se houve algum erro com o upload. Se sim, exibe a mensagem do erro
 				if ($_FILES['arq']['error'] != 0) {
-				die("Não foi possível fazer o upload, erro:<br />" . $_UP['erros'][$_FILES['arq']['error']]);
+				echo "Não foi possível enviar o arquivo, Verifique se escolheu o arquivo corretamente. Caso sim, Contate o programador, ou informe o problema no menu 'Relatar Bug'. <a href='http://ticket.datasafer.com.br/?pag=tickets&interna=".$_POST['id_ticket']."'>Voltar</a><br>";
 				exit; // Para a execução do script
 				}
 
@@ -428,12 +429,12 @@
 				// Faz a verificação da extensão do arq
 				$extensao = strtolower(end(explode('.', $_FILES['arq']['name'])));
 				if (array_search($extensao, $_UP['extensoes']) === false) {
-				echo "Por favor, envie arqs com as seguintes extensões: jpg, png , gif ou pdf";
+				echo "Por favor, envie arquivos com as seguintes extensões: jpg, png , gif ou pdf";
 				}
 
 				// Faz a verificação do tamanho do arq
 				else if ($_UP['tamanho'] < $_FILES['arq']['size']) {
-				echo "O arq enviado é muito grande, envie arqs de até 2Mb.";
+				echo "O arquivo enviado é muito grande, envie arqs de até 2Mb.";
 				}
 
 				// O arq passou em todas as verificações, hora de tentar movê-lo para a pasta
