@@ -30,9 +30,12 @@
 
 	session_start();
 
+	echo "lablbalbalb";
+
 	//LOGANDO ###################################################################################################################
 
 	if(isset($_POST['logando'])){ 
+		echo "Logando...";
 		$user = $_POST['login'];
 		$pass = md5($_POST['passwd']);
 
@@ -444,17 +447,45 @@
 				$nome_final = $_FILES['arq']['name'];
 				}
 
-				echo $nome_final;."nome final<br>"
+				
 
 				// Depois verifica se é possível mover o arq para a pasta escolhida
 				if (move_uploaded_file($_FILES['arq']['tmp_name'], $_UP['pasta'] . $nome_final)) {
 				// Upload efetuado com sucesso, exibe uma mensagem e um link para o arq
-				$stmt = "INSERT INTO tck_arqs (arq_name, arq_link, ticket) VALUES ('".$nome_final."', '".$_UP['pasta'] . $nome_final ."', ".$_POST['id_ticket'].")";
+				$stmt = "INSERT INTO tck_arquivos (arq_name, arq_link, ticket) VALUES ('".$nome_final."', '"."rsc/system_arqs/uploads/" . $nome_final ."', ".$_POST['id_ticket'].")";
 				$stmt = mysql_query($stmt);
-				echo "sucesso";
+
+				$mailQuery = "SELECT nome, email FROM tck_client 
+				JOIN tck_ticket ON tck_ticket.cliente = tck_client.id
+				WHERE tck_ticket.id = ".$_POST['id_ticket'];
+				$mailQuery = mysql_query($mailQuery);
+				$rsc = mysql_fetch_object($mailQuery);
+
+				$mail->addAddress($rsc->email, $rsc->nome);
+
+				$mail->Subject = 'Ticket Datasafer';
+				$mail->Body    = 'Foi adicionado um arquivo ao ticket enviado por você ao sistema de tickets Datasafer. Clique <a href="ticket.datasafer.com.br">Aqui</a> para acessar o sistema.<br>
+				Equipe de Suporte Datasafer.<br>
+				(Este email é gerado automaticamente. Favor não responder.)';
+				$mail->altBody = 'Foi adicionado um arquivo ao ticket enviado por você ao sistema de tickets Datasafer. Acesse ticket.datasafer.com.br e faça seu login para acompanhar o andamento do ticket.
+				Equipe de Suporte Datasafer.
+				(Este email é gerado automaticamente. Favor não responder.)';
+
+						$envio = $mail->Send();
+
+						if($envio){
+							echo "Email enviado com sucesso";
+						}else{
+							echo "Erro: ".$mail->ErrorInfo;
+						}
+
+				echo "<script> window.location = 'http://".WEBROOT."?pag=tickets&interna=".$_POST['id_ticket']."'; </script>";
+
+
+				
 				} else {
 				// Não foi possível fazer o upload, provavelmente a pasta está incorreta
-				echo "Não foi possível enviar o arq, tente novamente";
+				echo "Não foi possível enviar o arquivo, Contate o programador, ou informe o problema no menu 'Relatar Bug'. <a href='ticket.datasafer.com.br/?pag=tickets&interna=".$_POST['id_ticket']."'>Voltar</a>";
 				}
 
 				}

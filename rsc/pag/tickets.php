@@ -127,6 +127,40 @@
 			      </div>
 			    </div>
 			  </div>
+
+			  <div class="panel panel-default">
+			    <div class="panel-heading">
+			      <h4 class="panel-title">
+			        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+			         Arquivos do Ticket
+			        </a>
+			      </h4>
+			    </div>
+			    <div id="collapseTwo" class="panel-collapse collapse in">
+			      <div class="panel-body">
+			      <ul class="list-group">
+
+			  <?php
+			  	$stmt = "SELECT * FROM tck_arquivos WHERE ticket = ".$_GET['interna'];
+			  	$stmt = mysql_query($stmt);
+			  	if(mysql_num_rows($stmt) == 0){
+			  		echo "<h3>Não há arquivos para este ticket</h3>";
+			  	}else{
+			  		while ($rsc = mysql_fetch_array($stmt)) {
+			  			?>
+			  			<?php $nomeArquivo = $rsc['arq_name'];?>
+			  			<a href="<?php echo $rsc['arq_link']?>"><li class="list-group-item"><?php echo $nomeArquivo?></li></a>
+
+			  			<?php
+			  		}
+			  	}
+
+			  ?>
+
+			  </ul>
+			   </div>
+			    </div>
+			  </div>
 				
 				
 

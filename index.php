@@ -55,10 +55,11 @@
       </div>
       <div class="modal-body">
         <form method="post" action="rsc/system_arqs/actions.php">
+       	    <input type="hidden" name="logando" value="1">
+
         	<div class="form-group">
         	<label for="login">Login</label>
         	<input type="text" name="login" id="login" class="form-control" placeholder="Digite o username">
-        	<input type="hidden" name="logando" value="1">
 			</div>
 
 			<div class="form-group">
