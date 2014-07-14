@@ -453,7 +453,7 @@
 				// Depois verifica se é possível mover o arq para a pasta escolhida
 				if (move_uploaded_file($_FILES['arq']['tmp_name'], $_UP['pasta'] . $nome_final)) {
 				// Upload efetuado com sucesso, exibe uma mensagem e um link para o arq
-				$stmt = "INSERT INTO tck_arquivos (arq_name, arq_link, ticket) VALUES ('".$nome_final."', '"."rsc/system_arqs/uploads/" . $nome_final ."', ".$_POST['id_ticket'].")";
+				$stmt = "INSERT INTO tck_arquivos (arq_name, arq_link, ticket, data) VALUES ('".$nome_final."', '"."rsc/system_arqs/uploads/" . $nome_final ."', ".$_POST['id_ticket'].", '".date('Y-m-d')."')";
 				$stmt = mysql_query($stmt);
 
 				$mailQuery = "SELECT nome, email FROM tck_client 

@@ -18,7 +18,7 @@
         <li><a href="?pag=tickets">Tickets</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Sobre</a></li>
+        <li><a href="?pag=sobre">Sobre</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Opções <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">

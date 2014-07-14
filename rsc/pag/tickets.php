@@ -148,8 +148,10 @@
 			  	}else{
 			  		while ($rsc = mysql_fetch_array($stmt)) {
 			  			?>
-			  			<?php $nomeArquivo = $rsc['arq_name'];?>
-			  			<a href="<?php echo $rsc['arq_link']?>"><li class="list-group-item"><?php echo $nomeArquivo?></li></a>
+			  			<?php $nomeArquivo = $rsc['arq_name'];
+			  				  $dataEnvio   = $rsc['data'];
+			  			?>
+			  			<a href="<?php echo $rsc['arq_link']?>"><li class="list-group-item"><?php echo $nomeArquivo." - ".date('d/m/Y', strtotime($dataEnvio));?></li></a>
 
 			  			<?php
 			  		}
