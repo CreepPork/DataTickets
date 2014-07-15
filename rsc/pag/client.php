@@ -116,6 +116,7 @@
 		$rsc = mysql_fetch_array($stmt);
 
 		if($rsc['tipo'] == '1'){
+			conecta(2);
 			$stmt = "SELECT * FROM tck_client";
 			$stmt = mysql_query($stmt);
 			?>

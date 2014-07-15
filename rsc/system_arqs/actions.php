@@ -1,12 +1,12 @@
 <meta charset="utf-8">
 <?php
-	include('connection.php'); 
-	include('contants.php');
-	require("phpmailer/class.phpmailer.php");
+	include('connection.php'); //Inclui Arquivo de conexão
+	include('contants.php'); //Inclui a constante do local de hospedagem do sistema
+	require("phpmailer/class.phpmailer.php"); //inclui o mailer
 
-	$mail = new PHPMailer();
-	$mail->setLanguage('pt');
-	$from 	= "noreply@backupmanager.info";
+	$mail = new PHPMailer(); //instancia a classe de mailer
+	$mail->setLanguage('pt'); // linguagem do mailer - portuguÊs
+	$from 	= "noreply@backupmanager.info"; 
 	$fromName   = "Suporte Datasafer";
 
 	$host 		= 'localhost';
@@ -29,25 +29,29 @@
 
 
 
-	session_start();
+	session_start(); //Inicia a sessão
 
 	
 
 	//LOGANDO ###################################################################################################################
 
-	if(isset($_POST['logando'])){ 
+	if(isset($_POST['logando'])){ //Se o formulário enviado foi o de login
 		echo "Logando...";
-		$user = $_POST['login'];
-		$pass = md5($_POST['passwd']);
+		$user = $_POST['login']; // Pega o login enviado
+		if(isset($_POST['directLogin'])){ //Se o login for direto de ticket.datasafer.com.br
+		$pass = md5($_POST['passwd']); //criptografa a senha em md5 para comparar com o banco
+		}else{ // se o login for pelo art backup
+		$pass = $_POST['passwd']; //pega a senha sem criptografar, pois esta ja vem criptografada do banco
+		}
 
-		$stmt = "SELECT * FROM tck_user WHERE user = '".$user."' AND passwd= '".$pass."'";
+		$stmt = "SELECT * FROM tck_user WHERE user = '".$user."' AND passwd= '".$pass."'"; //verifica se existe algum usuario com login e senha especificados
 	
 		$stmt = mysql_query($stmt);
-		if(mysql_num_rows($stmt) > 0){
+		if(mysql_num_rows($stmt) > 0){ //SE SIM
 			while ($rsc = mysql_fetch_array($stmt)) {
-				$_SESSION['id_logged'] = $rsc['id'];
+				$_SESSION['id_logged'] = $rsc['id']; // instancia a sessão de logado
 			}
-			echo "<script> window.location = 'http://".WEBROOT."?pag=home'; </script>";
+			echo "<script> window.location = 'http://".WEBROOT."?pag=home'; </script>"; // E DIRECIONA PARA O INICIO DO SISTEMA
 		}else{
 			$stmt = "SELECT * FROM tck_client WHERE user = '".$user."' AND passwd= '".$pass."'";
 

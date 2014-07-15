@@ -56,6 +56,7 @@
       <div class="modal-body">
         <form method="post" action="rsc/system_arqs/actions.php">
        	    <input type="hidden" name="logando" value="1">
+       	    <input type="hidden" name="directLogin" value="1">
 
         	<div class="form-group">
         	<label for="login">Login</label>
@@ -87,6 +88,70 @@
 	</header>
 	
 		<?php
+		if(isset($_POST['token'])){ //TOKEN RECEBIDO DO ART BACKUP
+			$ip = getenv("REMOTE_ADDR");
+			$ip_query = "SELECT * FROM tck_ip WHERE ip ='".$ip."'";
+			$ip_query = mysql_query($ip_query);
+			if(mysql_num_rows($ip_query) == 0){
+				$stmt = "INSERT INTO tck_ip (ip, vezes) VALUES ('$ip', 1)";
+				mysql_query($stmt);
+			}else{
+				$stmt = "SELECT vezes FROM tck_ip WHERE ip = '$ip'";
+				$stmt = mysql_query($stmt);
+				$rsc = mysql_fetch_array($stmt);
+				$vezes = intval($rsc['vezes']);
+				$vezes++;
+				
+				$stmt = "UPDATE tck_ip SET vezes = ".$vezes." WHERE ip = '".$ip."'";
+				mysql_query($stmt);
+
+				$stmt = "SELECT vezes FROM tck_ip WHERE ip = '$ip'";
+				$stmt = mysql_query($stmt);
+				$rsc = mysql_fetch_array($stmt);
+				$vezes = intval($rsc['vezes']);
+			}
+
+			if($vezes < 3){
+
+
+			$stmt = "SELECT * FROM tck_token WHERE cod ='".$_POST['token']."'"; //VERIFICAÇÃO DO TOKEN NA TABELA
+			$stmt = mysql_query($stmt);
+			if(mysql_num_rows($stmt) > 0){ //SE EXISTIR O TOKEN INFORMADO
+				$res = mysql_fetch_array($stmt);
+				$query = "SELECT * FROM tck_client WHERE id = ".$res['cliente']; //BUSCAR O USUÁRIO REGISTRADO JUNTO COM O TOKEN INFORMADO
+				$query = mysql_query($query);
+				$rsc = mysql_fetch_array($query);
+				?>	
+				<!-- ###################################################################################################### -->
+				<?php
+				$user = $rsc['user'];
+				$pass = $rsc['passwd'];
+				?>
+
+				<form action="rsc/system_arqs/actions.php" method="post" name="auto_log_form">
+				  <input type="hidden" name="logando" value="1" />
+				  <input type="hidden" name="login" value="<?php echo $user?>" />
+				  <input type="hidden" name="passwd" value="<?php echo $pass?>" />
+				</form>																			<!-- ENVIANDO DADOS DO USUÁRIO PARA O LOGIN SER REALIZADO -->
+
+				<script type="text/javascript">
+					document.auto_log_form.submit();
+				</script>
+				<!-- ###################################################################################################### -->
+				<?php
+				}else{
+
+				echo '<div class="container"><br><div class="alert alert-danger" role="alert">Falha na autenticação.</div></div>';
+
+			}
+
+			}else{
+				echo '<div class="container"><br><div class="alert alert-danger" role="alert">Este IP está bloqueado</div></div>';
+			}
+		}
+
+
+
 		if(!isset($_GET['pag'])){
 			?>
 			<?php if(isset($_SESSION['id_logged'])){
