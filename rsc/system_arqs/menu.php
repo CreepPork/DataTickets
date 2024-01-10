@@ -1,6 +1,7 @@
 
 <?php
-include('rsc/connection.php');
+include('rsc/system_arqs/connection.php'); // FIXME: Path was wrong
+conecta(2); // FIXME: Added so that proper auth would be conducted
 	
 
 	if(isset($_SESSION['id_logged'])){

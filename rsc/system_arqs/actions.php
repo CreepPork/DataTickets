@@ -3,6 +3,8 @@
 	include('connection.php'); //Inclui Arquivo de conexão
 	include('contants.php'); //Inclui a constante do local de hospedagem do sistema
 	require("phpmailer/class.phpmailer.php"); //inclui o mailer
+	
+	conecta(2); // FIXME: Required change to make the login work
 
 	$mail = new PHPMailer(); //instancia a classe de mailer
 	$mail->setLanguage('pt'); // linguagem do mailer - portuguÊs
